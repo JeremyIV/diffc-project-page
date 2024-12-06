@@ -1,6 +1,6 @@
 ---
 layout: ../layouts/Layout.astro
-title: Academic Project Page Template
+title: Lossy Compression With Pretrained Diffusion Models
 description: Simple project page template for your research paper, built with Astro and Tailwind CSS
 favicon: favicon.svg
 thumbnail: screenshot.png
@@ -19,8 +19,13 @@ import YouTubeVideo from "../components/YouTubeVideo.astro";
 import LaTeX from "../components/LaTeX.astro";
 
 import outside from "../assets/outside.mp4";
+import dogs from "../assets/dogs.mp4";
+
 import transformer from "../assets/transformer.webp";
 import Splat from "../components/Splat.tsx"
+
+import ImageComparisonWidget from "../components/ImageComparisonWidget";
+import { demoData } from "../components/demoData";
 
 import CodeBlock from "../components/CodeBlock.astro";
 import Table from "../components/Table.astro";
@@ -30,27 +35,15 @@ export const components = {pre: CodeBlock, table: Table}
   title={frontmatter.title}
   authors={[
     {
-      name: "Roman Hauksson",
-      url: "https://roman.technology",
-      institution: "Independent",
-      notes: ["*", "†"],
+      name: "Jeremy Vonderfecht",
+      institution: "Portland State University",
     },
     {
-      name: "Author Two",
-      institution: "Institution Two",
-      notes: ["*", "†"],
-    },
-    {
-      name: "Author Three",
-      institution: "Institution Three",
-      notes: ["†"],
-    },
-    {
-      name: "Author Four",
-      institution: "Institution Four",
+      name: "Feng Liu",
+      institution: "Portland State University",
     },
   ]}
-  conference="Conference Name"
+  conference="ICLR 2024"
   notes={[
     {
       symbol: "*",
@@ -69,7 +62,7 @@ export const components = {pre: CodeBlock, table: Table}
     },
     {
       name: "Code",
-      url: "https://github.com/RomanHauksson/academic-project-astro-template",
+      url: "",
       icon: "mdi:github",
     },
     {
@@ -80,15 +73,11 @@ export const components = {pre: CodeBlock, table: Table}
   ]}
   />
 
-<Video source={outside} />
+We apply the DiffC algorithm to Stable Diffusion 1.5, 2.1, XL, and Flux-dev, and demonstrate that these pretrained models are remarkably capable lossy image compressors. A principled algorithm for lossy compression using pretrained diffusion models has been understood since at least Ho et al, but challenges in reverse-channel coding have prevented such algorithms from ever being fully implemented. We introduce simple workarounds that lead to the first complete implementation of DiffC, which is capable of compressing and decompressing images using Stable Diffusion in under 10 seconds. Despite requiring no additional training, our method is competitive with other state-of-the-art generative compression methods at low ultra-low bitrates.
 
-<HighlightedSection>
+<ImageComparisonWidget client:load data={demoData} />
 
-## Abstract
-
-This is a live demo for a template you can use to create a simple project page for your research paper. See the code for the template and instructions on how to use it yourself [here](https://github.com/RomanHauksson/academic-project-astro-template). It's made with the [Astro web framework](https://astro.build/) and styled with [Tailwind CSS](https://tailwindcss.com/). You write the content in [MDX](https://mdxjs.com/), which enables markdown formatting like **bold**, _italics_, and ~strikethrough~, as well as custom components like <SmallCaps>small caps.</SmallCaps>
-
-</HighlightedSection>
+<Video source={dogs} />
 
 ## Figures
 
@@ -147,7 +136,7 @@ You can add simple tables using [GitHub Flavored Markdown syntax](https://docs.g
 ```bibtex
 @misc{roman2024academic,
   author = "{Roman Hauksson}",
-  title = "Academic Project Page Template",
+  title = "Lossy Compression With Pretrained Diffusion Models",
   year = "2024",
   howpublished = "\url{https://research-template.roman.technology}",
 }
