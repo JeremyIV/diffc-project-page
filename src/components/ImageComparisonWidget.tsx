@@ -1,143 +1,50 @@
 import React, { useState, useRef, useEffect } from 'react';
 
+import DualAxisPlot from './DualAxisPlot';
+import ThreeWaySlider from './ThreeWaySlider';
+// Data transformer function
+interface BaselineDataPoint {
+  baseline: string;
+  diffc: string;
+  bpp: number;
+  size: string;
+  lpips: number;
+  psnr: number;
+}
 
-const ThreeWaySlider = ({ 
-  imageA, 
-  imageB, 
-  imageC, 
-  labelA = '', 
-  labelB = '', 
-  labelC = '' 
-}) => {
-  const [horizontalPosition, setHorizontalPosition] = useState(50);
-  const [verticalPosition, setVerticalPosition] = useState(90);
-  const [aspectRatio, setAspectRatio] = useState(1.5); // Default 3:2 ratio
-  const containerRef = useRef(null);
-  const isDraggingHorizontal = useRef(false);
-  const isDraggingVertical = useRef(false);
+interface ExperimentData {
+  ground_truth: string;
+  diffc_bpp: number[];
+  diffc_psnr: number[];
+  diffc_lpips: number[];
+  [key: string]: string | number[] | BaselineDataPoint[];
+}
 
-  useEffect(() => {
-    // Set actual aspect ratio once the first image loads
-    const img = new Image();
-    img.onload = () => {
-      setAspectRatio(img.width / img.height);
-    };
-    img.src = imageA;
-  }, [imageA]);
+function transformExperimentData(data: ExperimentData) {
+  const xValues: number[][] = [data.diffc_bpp];
+  const y1Arrays: number[][] = [data.diffc_psnr];
+  const y2Arrays: number[][] = [data.diffc_lpips];
+  const legend: string[] = ['DiffC'];
 
-  const handleMouseMove = (e) => {
-    if (!containerRef.current) return;
-    
-    const rect = containerRef.current.getBoundingClientRect();
-    
-    if (isDraggingHorizontal.current) {
-      const x = e.clientX - rect.left;
-      const newPosition = Math.max(0, Math.min(100, (x / rect.width) * 100));
-      setHorizontalPosition(newPosition);
-    }
-    
-    if (isDraggingVertical.current) {
-      const y = e.clientY - rect.top;
-      const newPosition = Math.max(0, Math.min(100, (y / rect.height) * 100));
-      setVerticalPosition(newPosition);
-    }
-  };
-
-  const handleMouseUp = () => {
-    isDraggingHorizontal.current = false;
-    isDraggingVertical.current = false;
-  };
-
-  useEffect(() => {
-    document.addEventListener('mouseup', handleMouseUp);
-    document.addEventListener('mousemove', handleMouseMove);
-    
-    return () => {
-      document.removeEventListener('mouseup', handleMouseUp);
-      document.removeEventListener('mousemove', handleMouseMove);
-    };
-  }, []);
-
-  const Label = ({ children, className }) => (
-    <div className={`absolute px-2 py-1 bg-black bg-opacity-50 text-white text-sm rounded ${className}`}>
-      {children}
-    </div>
+  const possibleBaselineKeys = Object.keys(data).filter(key => 
+    !['ground_truth', 'diffc_bpp', 'diffc_psnr', 'diffc_lpips'].includes(key) &&
+    Array.isArray(data[key]) &&
+    data[key].length > 0 &&
+    'bpp' in (data[key] as any)[0]
   );
 
-  return (
-    <div 
-      ref={containerRef}
-      className="relative select-none w-full"
-      style={{ 
-        paddingTop: `${(1 / aspectRatio) * 100}%`
-      }}
-    >
-      <div className="absolute inset-0">
-        {/* Base image (A) */}
-        <div className="absolute inset-0">
-          <img 
-            src={imageA} 
-            alt="Ground Truth"
-            className="absolute top-0 left-0 w-full h-full object-contain"
-          />
-          {labelA && <Label className="top-2 left-2">{labelA}</Label>}
-        </div>
-        
-        {/* Image B with horizontal clip */}
-        <div 
-          className="absolute top-0 left-0 w-full h-full overflow-hidden"
-          style={{ clipPath: `polygon(${horizontalPosition}% 0, 100% 0, 100% 100%, ${horizontalPosition}% 100%)` }}
-        >
-          <img 
-            src={imageB} 
-            alt="Baseline"
-            className="absolute top-0 left-0 w-full h-full object-contain"
-          />
-          {labelB && <Label className="top-2 right-2">{labelB}</Label>}
-        </div>
+  for (const baselineKey of possibleBaselineKeys) {
+    const baselineData = data[baselineKey] as BaselineDataPoint[];
+    const sortedData = [...baselineData].sort((a, b) => a.bpp - b.bpp);
+    
+    xValues.push(sortedData.map(point => point.bpp));
+    y1Arrays.push(sortedData.map(point => point.psnr));
+    y2Arrays.push(sortedData.map(point => point.lpips));
+    legend.push(baselineKey.charAt(0).toUpperCase() + baselineKey.slice(1));
+  }
 
-        {/* Image C with vertical clip */}
-        <div 
-          className="absolute top-0 left-0 w-full h-full overflow-hidden"
-          style={{ clipPath: `polygon(0 ${verticalPosition}%, 100% ${verticalPosition}%, 100% 100%, 0 100%)` }}
-        >
-          <img 
-            src={imageC} 
-            alt="DiffC"
-            className="absolute top-0 left-0 w-full h-full object-contain"
-          />
-          {labelC && <Label className="bottom-2 left-2">{labelC}</Label>}
-        </div>
-
-        {/* Horizontal slider */}
-        <div 
-          className="absolute w-1 bg-white/50 cursor-ew-resize"
-          style={{ 
-            left: `${horizontalPosition}%`,
-            top: 0,
-            height: `${verticalPosition}%`
-          }}
-          onMouseDown={() => isDraggingHorizontal.current = true}
-        >
-          <div className="absolute top-2 left-1/2 -translate-x-1/2 w-6 h-6 bg-white rounded-full shadow-lg flex items-center justify-center">
-            ↔
-          </div>
-        </div>
-
-        {/* Vertical slider */}
-        <div 
-          className="absolute left-0 right-0 h-1 bg-white/50 cursor-ns-resize"
-          style={{ top: `${verticalPosition}%` }}
-          onMouseDown={() => isDraggingVertical.current = true}
-        >
-          <div className="absolute left-2 top-1/2 -translate-y-1/2 w-6 h-6 bg-white rounded-full shadow-lg flex items-center justify-center">
-            ↕
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
+  return { xValues, y1Arrays, y2Arrays, legend };
+}
 
 const ThumbnailButton = ({ imageSrc, isSelected, onClick }) => {
   const thumbnailHeight = 64;
@@ -177,6 +84,36 @@ const MethodSelector = ({ method, bitrates, selectedBpp, onBppSelect }) => (
     </div>
   </div>
 );
+
+
+const getNearestMethodAndBpp = (target_bpp) => {
+  const image_data = data[selectedImage];
+  const methods = getMethodsForImage(selectedImage);
+  
+  let best_distance = Infinity;
+  let best_bpp = null;
+  let best_method = null;
+
+   methods.forEach(method => {      
+    if (image_data[method] && Array.isArray(image_data[method])) {
+      image_data[method].forEach(entry => {
+        const bpp = entry.bpp;
+        const distance = Math.abs(bpp - target_bpp);
+        if (distance < best_distance) {
+          best_distance = distance;
+          best_bpp = bpp;
+          best_method = method;
+        }
+      });
+    }
+  });
+
+  return {
+    method: best_method,
+    bpp: best_bpp
+  };  
+}
+
 
 const ImageComparisonWidget = ({ data }) => {
   const imageNames = Object.keys(data);
@@ -293,8 +230,48 @@ const ImageComparisonWidget = ({ data }) => {
     setSelectedBpp(bpp);
   };
 
+  const getNearestMethodAndBpp = (target_bpp) => {
+    const image_data = data[selectedImage];
+
+    const getMethodsForImage = (imageName) => {
+      return imageName && data[imageName] 
+        ? Object.keys(data[imageName]).filter(key => 
+            !['ground_truth', 'diffc_bpp', 'diffc_psnr', 'diffc_lpips'].includes(key)
+          )
+        : [];
+    };
+  
+    const methods = getMethodsForImage(selectedImage);
+    
+    let best_distance = Infinity;
+    let best_bpp = null;
+    let best_method = null;
+  
+     methods.forEach(method => {      
+      if (image_data[method] && Array.isArray(image_data[method])) {
+        image_data[method].forEach(entry => {
+          const bpp = entry.bpp;
+          const distance = Math.abs(bpp - target_bpp);
+          if (distance < best_distance) {
+            best_distance = distance;
+            best_bpp = bpp;
+            best_method = method;
+          }
+        });
+      }
+    });
+  
+    return {
+      method: best_method,
+      bpp: best_bpp
+    };  
+  }
+
   const imageTriple = getCurrentTriple();
   const labels = getLabels();
+
+  // Transform the current image's data for the DualAxisPlot
+  const plotData = selectedImage ? transformExperimentData(data[selectedImage]) : null;
 
   return (
     <div className="w-full max-w-6xl mx-auto space-y-6">
@@ -336,18 +313,31 @@ const ImageComparisonWidget = ({ data }) => {
         )}
       </div>
 
-      {/* Method and bitrate selection */}
-      <div className="flex gap-8 justify-center">
-        {methods.map((method) => (
-          <MethodSelector
-            key={method}
-            method={method}
-            bitrates={getBitratesForMethod(selectedImage, method)}
-            selectedBpp={selectedMethod === method ? selectedBpp : null}
-            onBppSelect={handleBppSelect}
+      {/* Rate-Distortion Plot */}
+      {plotData && (
+        <div className="w-full flex justify-center">
+          <DualAxisPlot
+            xValues={plotData.xValues}
+            y1Arrays={plotData.y1Arrays}
+            y2Arrays={plotData.y2Arrays}
+            legend={plotData.legend}
+            width={800}
+            height={400}
+            xLabel="Bits per pixel (bpp)"
+            y1Label="PSNR (dB)"
+            y2Label="LPIPS"
+            onXValueChange={(xValue) => {
+              if (xValue !== null) {
+                const { method, bpp } = getNearestMethodAndBpp(xValue, data, selectedImage, getMethodsForImage);
+                if (method && bpp !== null) {
+                  setSelectedMethod(method);
+                  setSelectedBpp(bpp);
+                }
+              }
+            }}
           />
-        ))}
-      </div>
+        </div>
+      )}
     </div>
   );
 };
