@@ -13,11 +13,13 @@ const DualAxisPlot = ({
   y1Label = 'Y1 Axis',
   y2Label = 'Y2 Axis',
   pointRadius = 4,
-  onXValueChange = null
+  onXValueChange = null,
+  stuckX = null,
+  setStuckX = null
 }) => {
   // State for hover line and stuck position
   const [hoverX, setHoverX] = useState(null);
-  const [stuckX, setStuckX] = useState(null);
+  //const [stuckX, setStuckX] = useState(null);
 
   useEffect(() => {
     if (onXValueChange) {
@@ -125,6 +127,10 @@ const DualAxisPlot = ({
     ), '');
   };
 
+  // Determine which vertical line to show
+  const displayX = hoverX !== null ? hoverX : stuckX;
+
+
   // Create paths and points for y1 lines
   const y1Elements = y1Arrays.map((yArray, index) => {
     const color = colors[index % colors.length];
@@ -141,7 +147,7 @@ const DualAxisPlot = ({
             key={`y1-point-${index}-${i}`}
             cx={scales.xScale(x)}
             cy={scales.y1Scale(yArray[i])}
-            r={pointRadius}
+            r={x === displayX ? pointRadius * 2 : pointRadius}
             fill={color}
           />
         ))}
@@ -166,7 +172,7 @@ const DualAxisPlot = ({
             key={`y2-point-${index}-${i}`}
             cx={scales.xScale(x)}
             cy={scales.y2Scale(yArray[i])}
-            r={pointRadius}
+            r={x === displayX ? pointRadius * 2 : pointRadius}
             fill={color}
           />
         ))}
@@ -203,8 +209,6 @@ const DualAxisPlot = ({
     );
   });
 
-  // Determine which vertical line to show
-  const displayX = hoverX !== null ? hoverX : stuckX;
 
   return (
     <svg 

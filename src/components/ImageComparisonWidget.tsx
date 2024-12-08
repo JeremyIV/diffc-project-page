@@ -121,6 +121,7 @@ const ImageComparisonWidget = ({ data }) => {
   const [selectedImage, setSelectedImage] = useState(imageNames[0] || null);
   const [selectedMethod, setSelectedMethod] = useState(null);
   const [selectedBpp, setSelectedBpp] = useState(null);
+  const [stuckValue, setStuckValue] = useState(null); // For DualAxisPlot's vertical line
 
   // Helper to find closest bpp value
   const findClosestBpp = (targetBpp, availableBpps) => {
@@ -181,9 +182,11 @@ const ImageComparisonWidget = ({ data }) => {
         // Find closest available bpp to current selection
         const closestBpp = findClosestBpp(selectedBpp, availableBpps);
         setSelectedBpp(closestBpp);
+        setStuckValue(closestBpp);
       } else {
         // If no bpp selected, select first available
         setSelectedBpp(availableBpps[0] || null);
+        setStuckValue(availableBpps[0] || null);
       }
     }
   }, [selectedMethod, selectedImage]);
@@ -228,6 +231,17 @@ const ImageComparisonWidget = ({ data }) => {
   const handleBppSelect = (method, bpp) => {
     setSelectedMethod(method);
     setSelectedBpp(bpp);
+    setStuckValue(bpp); // Update the vertical line when buttons are clicked
+  };
+
+  const handlePlotXValueChange = (xValue) => {
+    if (xValue !== null) {
+      const { method, bpp } = getNearestMethodAndBpp(xValue, data, selectedImage, getMethodsForImage);
+      if (method && bpp !== null) {
+        setSelectedMethod(method);
+        setSelectedBpp(bpp);
+      }
+    }
   };
 
   const getNearestMethodAndBpp = (target_bpp) => {
@@ -299,12 +313,6 @@ const ImageComparisonWidget = ({ data }) => {
               labelB={labels.labelB}
               labelC={labels.labelC}
             />
-            {/* Optional: Display metrics */}
-            <div className="text-sm text-gray-600">
-              PSNR: {imageTriple.metrics.psnr.toFixed(2)} dB | 
-              LPIPS: {imageTriple.metrics.lpips.toFixed(4)} | 
-              Size: {imageTriple.metrics.size}
-            </div>
           </>
         ) : (
           <div className="h-64 flex items-center justify-center text-gray-500">
@@ -313,9 +321,22 @@ const ImageComparisonWidget = ({ data }) => {
         )}
       </div>
 
+      {/* Method and bitrate selection */}
+      <div className="flex gap-8 justify-center">
+        {methods.map((method) => (
+          <MethodSelector
+            key={method}
+            method={method}
+            bitrates={getBitratesForMethod(selectedImage, method)}
+            selectedBpp={selectedMethod === method ? selectedBpp : null}
+            onBppSelect={handleBppSelect}
+          />
+        ))}
+      </div>
+
       {/* Rate-Distortion Plot */}
       {plotData && (
-        <div className="w-full flex justify-center">
+        <div className="w-full flex justify-center mt-6">
           <DualAxisPlot
             xValues={plotData.xValues}
             y1Arrays={plotData.y1Arrays}
@@ -326,15 +347,9 @@ const ImageComparisonWidget = ({ data }) => {
             xLabel="Bits per pixel (bpp)"
             y1Label="PSNR (dB)"
             y2Label="LPIPS"
-            onXValueChange={(xValue) => {
-              if (xValue !== null) {
-                const { method, bpp } = getNearestMethodAndBpp(xValue, data, selectedImage, getMethodsForImage);
-                if (method && bpp !== null) {
-                  setSelectedMethod(method);
-                  setSelectedBpp(bpp);
-                }
-              }
-            }}
+            onXValueChange={handlePlotXValueChange}
+            stuckX={stuckValue} // Pass the current bpp as the stuck value
+            setStuckX={setStuckValue}
           />
         </div>
       )}
