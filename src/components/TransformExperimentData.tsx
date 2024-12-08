@@ -1,71 +1,72 @@
+// Data transformer function
 interface BaselineDataPoint {
-    baseline: string;
-    diffc: string;
-    bpp: number;
-    size: string;
-    lpips: number;
-    psnr: number;
-  }
-  
-  interface ExperimentData {
-    ground_truth: string;
-    diffc_bpp: number[];
-    diffc_psnr: number[];
-    diffc_lpips: number[];
-    [key: string]: string | number[] | BaselineDataPoint[];
-  }
-  
-  interface PlotData {
-    xValues: number[][];
-    y1Arrays: number[][];
-    y2Arrays: number[][];
-    legend: string[];
-  }
-  
-  function transformExperimentData(data: ExperimentData): PlotData {
-    // Initialize arrays with diffC data
-    const xValues: number[][] = [data.diffc_bpp];
-    const y1Arrays: number[][] = [data.diffc_psnr];
-    const y2Arrays: number[][] = [data.diffc_lpips];
-    const legend: string[] = ['DiffC'];
-  
-    // Get all keys that might be baseline methods
-    const possibleBaselineKeys = Object.keys(data).filter(key => 
-      // Filter out known non-baseline keys
-      !['ground_truth', 'diffc_bpp', 'diffc_psnr', 'diffc_lpips'].includes(key) &&
-      // Check if the value is an array of BaselineDataPoint objects
-      Array.isArray(data[key]) &&
-      data[key].length > 0 &&
-      'bpp' in (data[key] as any)[0]
-    );
-  
-    // Process each baseline method
-    for (const baselineKey of possibleBaselineKeys) {
-      const baselineData = data[baselineKey] as BaselineDataPoint[];
-      
-      // Sort the baseline data by bpp to ensure curves are drawn correctly
-      const sortedData = [...baselineData].sort((a, b) => a.bpp - b.bpp);
-      
-      // Extract the arrays for this baseline
-      const bppValues = sortedData.map(point => point.bpp);
-      const psnrValues = sortedData.map(point => point.psnr);
-      const lpipsValues = sortedData.map(point => point.lpips);
-  
-      // Add the arrays to our plot data
-      xValues.push(bppValues);
-      y1Arrays.push(psnrValues);
-      y2Arrays.push(lpipsValues);
-      
-      // Add the method name to legend (capitalize first letter)
-      legend.push(baselineKey.charAt(0).toUpperCase() + baselineKey.slice(1));
+  baseline: string;
+  diffc: string;
+  bpp: number;
+  size: string;
+  lpips: number;
+  psnr: number;
+}
+
+interface ExperimentData {
+  ground_truth: string;
+  diffc_bpp: number[];
+  diffc_psnr: number[];
+  diffc_lpips: number[];
+  [key: string]: string | number[] | BaselineDataPoint[];
+}
+
+const transformExperimentData = (imageData) => {
+  if (!imageData) return null;
+
+  // Get the baseline methods - all methods except diffc, ground_truth, and meta fields
+  const baselineMethods = Object.keys(imageData).filter(key => 
+    !['diffc_bpp', 'diffc_psnr', 'diffc_lpips', 'ground_truth'].includes(key)
+  );
+
+  // Find max bpp across all baseline methods
+  const maxBaselineBpp = Math.max(...baselineMethods.map(method => {
+    if (!Array.isArray(imageData[method])) return 0;
+    return Math.max(...imageData[method].map(point => point.bpp));
+  }));
+
+  // Initialize arrays
+  const methods = ['diffc', ...baselineMethods];
+  const xValues = methods.map(() => []);
+  const y1Arrays = methods.map(() => []); // PSNR
+  const y2Arrays = methods.map(() => []); // LPIPS
+
+  // Process DiffC data first - now filtered by maxBaselineBpp
+  const diffc_bpps = imageData.diffc_bpp || [];
+  const diffc_psnrs = imageData.diffc_psnr || [];
+  const diffc_lpips = imageData.diffc_lpips || [];
+
+  diffc_bpps.forEach((bpp, i) => {
+    // Only include points up to maxBaselineBpp instead of hardcoded 1
+    if (bpp <= maxBaselineBpp * 1.05) {
+      xValues[0].push(bpp);
+      y1Arrays[0].push(diffc_psnrs[i]);
+      y2Arrays[0].push(diffc_lpips[i]);
     }
-  
-    return {
-      xValues,
-      y1Arrays,
-      y2Arrays,
-      legend
-    };
-  }
-  
-  export default transformExperimentData;
+  });
+
+  // Process baseline methods
+  baselineMethods.forEach((method, methodIndex) => {
+    if (Array.isArray(imageData[method])) {
+      imageData[method].forEach(point => {
+        xValues[methodIndex + 1].push(point.bpp);
+        y1Arrays[methodIndex + 1].push(point.psnr);
+        y2Arrays[methodIndex + 1].push(point.lpips);
+      });
+    }
+  });
+
+  return {
+    methods,
+    xValues,
+    y1Arrays,
+    y2Arrays
+  };
+};
+
+export default transformExperimentData;

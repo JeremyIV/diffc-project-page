@@ -4,17 +4,17 @@ const DualAxisPlot = ({
   xValues = [],
   y1Arrays = [],
   y2Arrays = [],
-  legend = [],
+  methods = [],
+  methodNamesAndColors = {},  // Add this
   width = 600,
   height = 400,
-  margin = { top: 50, right: 70, bottom: 40, left: 70 },
-  colors = ['#2563eb', '#16a34a', '#9333ea', '#dc2626', '#ea580c', '#84cc16'],
+  margin = { top: 10, right: 70, bottom: 40, left: 70 },
   xLabel = 'X Axis',
   y1Label = 'Y1 Axis',
   y2Label = 'Y2 Axis',
   pointRadius = 4,
   onXValueChange = null,
-  stuckX = null
+  selection = null
 }) => {
   // State for hover line and stuck position
   const [hoverX, setHoverX] = useState(null);
@@ -119,12 +119,13 @@ const DualAxisPlot = ({
   };
 
   // Determine which vertical line to show
-  const displayX = hoverX !== null ? hoverX : stuckX;
+  const displayX = hoverX !== null ? hoverX : selection.bpp;
 
-
-  // Create paths and points for y1 lines
+  // Create paths and points for y1 lines  
   const y1Elements = y1Arrays.map((yArray, index) => {
-    const color = colors[index % colors.length];
+    console.log("methods and index:", methods, index)
+    const methodKey = methods[index];
+    const color = methodNamesAndColors[methodKey].color;
     return (
       <g key={`y1-line-${index}`}>
         <path
@@ -138,7 +139,7 @@ const DualAxisPlot = ({
             key={`y1-point-${index}-${i}`}
             cx={scales.xScale(x)}
             cy={scales.y1Scale(yArray[i])}
-            r={x === displayX ? pointRadius * 2 : pointRadius}
+            r={x === selection.bpp ? pointRadius * 2 : pointRadius}
             fill={color}
           />
         ))}
@@ -148,7 +149,8 @@ const DualAxisPlot = ({
 
   // Create paths and points for y2 lines
   const y2Elements = y2Arrays.map((yArray, index) => {
-    const color = colors[index % colors.length];
+    const methodKey = methods[index];
+    const color = methodNamesAndColors[methodKey].color;
     return (
       <g key={`y2-line-${index}`}>
         <path
@@ -163,7 +165,7 @@ const DualAxisPlot = ({
             key={`y2-point-${index}-${i}`}
             cx={scales.xScale(x)}
             cy={scales.y2Scale(yArray[i])}
-            r={x === displayX ? pointRadius * 2 : pointRadius}
+            r={x === selection.bpp ? pointRadius * 2 : pointRadius}
             fill={color}
           />
         ))}
@@ -172,21 +174,20 @@ const DualAxisPlot = ({
   });
 
   // Generate legend elements horizontally
-  const legendElements = legend.map((label, index) => {
-    const color = colors[index % colors.length];
+  const legendElements = Object.entries(methodNamesAndColors).map(([key, value], index) => {
     const availableWidth = width - margin.left - margin.right;
-    const itemWidth = Math.min(120, availableWidth / legend.length);
-    const startX = margin.left + (availableWidth - (itemWidth * legend.length)) / 2;
+    const itemWidth = Math.min(120, availableWidth / Object.keys(methodNamesAndColors).length);
+    const startX = margin.left + (availableWidth - (itemWidth * Object.keys(methodNamesAndColors).length)) / 2;
     const x = startX + (index * itemWidth);
     
     return (
-      <g key={`legend-${index}`} transform={`translate(${x}, 0)`}>
+      <g key={`legend-${key}`} transform={`translate(${x}, 0)`}>
         <rect
           x={0}
           y={10}
           width={16}
           height={16}
-          fill={color}
+          fill={value.color}
         />
         <text
           x={21}
@@ -194,18 +195,16 @@ const DualAxisPlot = ({
           className="text-sm fill-gray-800"
           dominantBaseline="middle"
         >
-          {label}
+          {value.name}
         </text>
       </g>
     );
   });
 
-
   return (
     <svg 
       width={width} 
       height={height} 
-      className="bg-white"
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}
@@ -336,10 +335,18 @@ const DualAxisPlot = ({
       {/* Y1 label with solid line indicator */}
       <g transform={`translate(0, ${height/2}) rotate(-90)`}>
         <line
-          x1={-45}
-          y1={margin.left / 3}
-          x2={-25}
-          y2={margin.left / 3}
+          x1={-65}
+          y1={margin.left / 4}
+          x2={-35}
+          y2={margin.left / 4}
+          stroke="black"
+          strokeWidth="2"
+        />
+        <line
+          x1={35}
+          y1={margin.left / 4}
+          x2={65}
+          y2={margin.left / 4}
           stroke="black"
           strokeWidth="2"
         />
@@ -356,10 +363,19 @@ const DualAxisPlot = ({
       {/* Y2 label with dashed line indicator */}
       <g transform={`translate(${width}, ${height/2}) rotate(-90)`}>
         <line
-          x1={-45}
-          y1={-margin.right / 3}
+          x1={-55}
+          y1={-margin.right / 2.5}
           x2={-25}
-          y2={-margin.right / 3}
+          y2={-margin.right / 2.5}
+          stroke="black"
+          strokeWidth="2"
+          strokeDasharray="4,4"
+        />
+        <line
+          x1={25}
+          y1={-margin.right / 2.5}
+          x2={55}
+          y2={-margin.right / 2.5}
           stroke="black"
           strokeWidth="2"
           strokeDasharray="4,4"
@@ -373,9 +389,6 @@ const DualAxisPlot = ({
           {y2Label}
         </text>
       </g>
-
-      {/* Legend */}
-      {legendElements}
     </svg>
   );
 };

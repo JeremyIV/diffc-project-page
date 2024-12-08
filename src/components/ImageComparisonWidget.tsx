@@ -1,16 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
+import transformExperimentData from './TransformExperimentData';
 
 import DualAxisPlot from './DualAxisPlot';
 import ThreeWaySlider from './ThreeWaySlider';
-// Data transformer function
-interface BaselineDataPoint {
-  baseline: string;
-  diffc: string;
-  bpp: number;
-  size: string;
-  lpips: number;
-  psnr: number;
-}
 
 interface Selection {
   method: string | null;
@@ -18,44 +10,6 @@ interface Selection {
   xValue: number | null;
 }
 
-interface ExperimentData {
-  ground_truth: string;
-  diffc_bpp: number[];
-  diffc_psnr: number[];
-  diffc_lpips: number[];
-  [key: string]: string | number[] | BaselineDataPoint[];
-}
-
-function transformExperimentData(data: ExperimentData) {
-  // Filter DiffC data points first
-  const filteredIndices = data.diffc_bpp.map((bpp, i) => ({ bpp, i }))
-    .filter(({ bpp }) => bpp <= 1.0)
-    .map(({ i }) => i);
-
-  const xValues: number[][] = [filteredIndices.map(i => data.diffc_bpp[i])];
-  const y1Arrays: number[][] = [filteredIndices.map(i => data.diffc_psnr[i])];
-  const y2Arrays: number[][] = [filteredIndices.map(i => data.diffc_lpips[i])];
-  const legend: string[] = ['DiffC'];
-
-  const possibleBaselineKeys = Object.keys(data).filter(key => 
-    !['ground_truth', 'diffc_bpp', 'diffc_psnr', 'diffc_lpips'].includes(key) &&
-    Array.isArray(data[key]) &&
-    data[key].length > 0 &&
-    'bpp' in (data[key] as any)[0]
-  );
-
-  for (const baselineKey of possibleBaselineKeys) {
-    const baselineData = data[baselineKey] as BaselineDataPoint[];
-    const sortedData = [...baselineData].sort((a, b) => a.bpp - b.bpp);
-    
-    xValues.push(sortedData.map(point => point.bpp));
-    y1Arrays.push(sortedData.map(point => point.psnr));
-    y2Arrays.push(sortedData.map(point => point.lpips));
-    legend.push(baselineKey.charAt(0).toUpperCase() + baselineKey.slice(1));
-  }
-
-  return { xValues, y1Arrays, y2Arrays, legend };
-}
 const ThumbnailButton = ({ imageSrc, isSelected, onClick }) => {
   const thumbnailHeight = 64;
 
@@ -74,9 +28,34 @@ const ThumbnailButton = ({ imageSrc, isSelected, onClick }) => {
   );
 };
 
-const MethodSelector = ({ method, bitrates, selectedBpp, onBppSelect }) => (
+const methodNamesAndColors = {
+  'diffc': {
+    name: 'DiffC',
+    color: '#2563eb'  // deep blue
+  },
+  'msillm': {
+    name: 'MS-ILLM',
+    color: '#16a34a'  // emerald green
+  },
+  'perco': {
+    name: 'PerCo',
+    color: '#9333ea'  // vivid purple
+  },
+  'diffeic': {
+    name: 'DiffEIC',
+    color: '#dc2626'  // bright red
+  }
+};
+
+const MethodSelector = ({ method, displayName, bitrates, selectedBpp, onBppSelect }) => (
   <div className="flex flex-col">
-    <span className="text-sm font-medium mb-1 text-gray-700">{method}</span>
+    <div className="flex items-center gap-2 mb-1">
+      <div 
+        className="w-4 h-4 rounded-full"
+        style={{ backgroundColor: methodNamesAndColors[method].color }}
+      />
+      <span className="text-sm font-medium text-gray-700">{displayName}</span>
+    </div>
     <div className="flex flex-wrap gap-1">
       {bitrates.map((bpp) => (
         <button
@@ -84,9 +63,10 @@ const MethodSelector = ({ method, bitrates, selectedBpp, onBppSelect }) => (
           onClick={() => onBppSelect(method, bpp)}
           className={`px-2 py-0.5 text-xs rounded-full transition-colors ${
             selectedBpp === bpp
-              ? 'bg-blue-500 text-white'
+              ? 'text-white'
               : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
           }`}
+          style={selectedBpp === bpp ? { backgroundColor: methodNamesAndColors[method].color } : undefined}
         >
           {bpp.toFixed(4)}
         </button>
@@ -94,7 +74,6 @@ const MethodSelector = ({ method, bitrates, selectedBpp, onBppSelect }) => (
     </div>
   </div>
 );
-
 const ImageComparisonWidget = ({ data }) => {
   const imageNames = Object.keys(data);
   
@@ -220,14 +199,15 @@ const ImageComparisonWidget = ({ data }) => {
     const labelA = selectedImage.toLowerCase().includes('div2k') 
       ? "DiffC (Flux-dev)"
       : "DiffC (Stable Diffusion 1.5)";
-
+  
     return {
       labelA,
-      labelB: selection.method,
+      labelB: selection.method ? methodNamesAndColors[selection.method].name : '',
       labelC: "Ground Truth"
     };
   };
-
+  
+  
   const handleImageClick = (imageName) => {
     setSelectedImage(imageName);
   };
@@ -321,35 +301,50 @@ const ImageComparisonWidget = ({ data }) => {
 
       {/* Method and bitrate selection */}
       <div className="flex gap-8 justify-center">
+        {/* DiffC legend entry */}
+        <div className="flex flex-col">
+          <div className="flex items-center gap-2 mb-1">
+            <div className="w-8 flex items-center">
+              <div 
+                className="w-full h-0.5"
+                style={{ backgroundColor: methodNamesAndColors['diffc'].color }}
+              />
+            </div>
+            <span className="text-sm font-medium text-gray-700">{methodNamesAndColors['diffc'].name}</span>
+          </div>
+        </div>
+
         {methods.map((method) => (
           <MethodSelector
-            key={method}
-            method={method}
-            bitrates={getBitratesForMethod(selectedImage, method)}
-            selectedBpp={selection.method === method ? selection.bpp : null}
-            onBppSelect={handleBppSelect}
-          />
+          key={method}
+          method={method}
+          displayName={methodNamesAndColors[method].name}  // Add this
+          bitrates={getBitratesForMethod(selectedImage, method)}
+          selectedBpp={selection.method === method ? selection.bpp : null}
+          onBppSelect={handleBppSelect}
+        />        
         ))}
       </div>
 
       {/* Rate-Distortion Plot */}
       {plotData && (
-        <div className="w-full flex justify-center mt-6">
-          <DualAxisPlot
-            xValues={plotData.xValues}
-            y1Arrays={plotData.y1Arrays}
-            y2Arrays={plotData.y2Arrays}
-            legend={plotData.legend}
-            width={800}
-            height={400}
-            xLabel="Bits per pixel (bpp)"
-            y1Label="PSNR (dB)"
-            y2Label="LPIPS"
-            onXValueChange={handlePlotXValueChange}
-            stuckX={selection.xvalue} // Pass the current bpp as the stuck value
-          />
-        </div>
-      )}
+      <div className="w-full flex justify-center mt-6">
+        <DualAxisPlot
+          xValues={plotData.xValues}
+          y1Arrays={plotData.y1Arrays}
+          y2Arrays={plotData.y2Arrays}
+          methods={plotData.methods}
+          methodNamesAndColors={methodNamesAndColors}  // Add this
+          width={800}
+          height={400}
+          xLabel="Bits per pixel (bpp)"
+          y1Label="PSNR (dB)"
+          y2Label="LPIPS"
+          onXValueChange={handlePlotXValueChange}
+          selection={selection}
+        />
+      </div>
+    )}
     </div>
   );
 };
