@@ -27,9 +27,14 @@ interface ExperimentData {
 }
 
 function transformExperimentData(data: ExperimentData) {
-  const xValues: number[][] = [data.diffc_bpp];
-  const y1Arrays: number[][] = [data.diffc_psnr];
-  const y2Arrays: number[][] = [data.diffc_lpips];
+  // Filter DiffC data points first
+  const filteredIndices = data.diffc_bpp.map((bpp, i) => ({ bpp, i }))
+    .filter(({ bpp }) => bpp <= 1.0)
+    .map(({ i }) => i);
+
+  const xValues: number[][] = [filteredIndices.map(i => data.diffc_bpp[i])];
+  const y1Arrays: number[][] = [filteredIndices.map(i => data.diffc_psnr[i])];
+  const y2Arrays: number[][] = [filteredIndices.map(i => data.diffc_lpips[i])];
   const legend: string[] = ['DiffC'];
 
   const possibleBaselineKeys = Object.keys(data).filter(key => 
@@ -51,7 +56,6 @@ function transformExperimentData(data: ExperimentData) {
 
   return { xValues, y1Arrays, y2Arrays, legend };
 }
-
 const ThumbnailButton = ({ imageSrc, isSelected, onClick }) => {
   const thumbnailHeight = 64;
 
