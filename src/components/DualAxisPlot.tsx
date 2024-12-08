@@ -14,19 +14,10 @@ const DualAxisPlot = ({
   y2Label = 'Y2 Axis',
   pointRadius = 4,
   onXValueChange = null,
-  stuckX = null,
-  setStuckX = null
+  stuckX = null
 }) => {
   // State for hover line and stuck position
   const [hoverX, setHoverX] = useState(null);
-  //const [stuckX, setStuckX] = useState(null);
-
-  useEffect(() => {
-    if (onXValueChange) {
-      const activeX = hoverX !== null ? hoverX : stuckX;
-      onXValueChange(activeX);
-    }
-  }, [hoverX, stuckX, onXValueChange]);
 
   // Calculate the actual plotting area dimensions
   const plotWidth = width - margin.left - margin.right;
@@ -92,8 +83,8 @@ const DualAxisPlot = ({
 
   // Handle click to set stuck position
   const handleClick = () => {
-    if (hoverX !== null) {
-      setStuckX(hoverX);
+    if (hoverX !== null && onXValueChange) {
+      onXValueChange(hoverX);
     }
   };
 

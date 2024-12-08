@@ -12,6 +12,12 @@ interface BaselineDataPoint {
   psnr: number;
 }
 
+interface Selection {
+  method: string | null;
+  bpp: number | null;
+  xValue: number | null;
+}
+
 interface ExperimentData {
   ground_truth: string;
   diffc_bpp: number[];
@@ -85,44 +91,61 @@ const MethodSelector = ({ method, bitrates, selectedBpp, onBppSelect }) => (
   </div>
 );
 
-
-const getNearestMethodAndBpp = (target_bpp) => {
-  const image_data = data[selectedImage];
-  const methods = getMethodsForImage(selectedImage);
-  
-  let best_distance = Infinity;
-  let best_bpp = null;
-  let best_method = null;
-
-   methods.forEach(method => {      
-    if (image_data[method] && Array.isArray(image_data[method])) {
-      image_data[method].forEach(entry => {
-        const bpp = entry.bpp;
-        const distance = Math.abs(bpp - target_bpp);
-        if (distance < best_distance) {
-          best_distance = distance;
-          best_bpp = bpp;
-          best_method = method;
-        }
-      });
-    }
-  });
-
-  return {
-    method: best_method,
-    bpp: best_bpp
-  };  
-}
-
-
 const ImageComparisonWidget = ({ data }) => {
   const imageNames = Object.keys(data);
   
   const [selectedImage, setSelectedImage] = useState(imageNames[0] || null);
-  const [selectedMethod, setSelectedMethod] = useState(null);
-  const [selectedBpp, setSelectedBpp] = useState(null);
-  const [stuckValue, setStuckValue] = useState(null); // For DualAxisPlot's vertical line
+  const [selection, setSelection] = useState<Selection>({
+    method: null,
+    bpp: null,
+    xValue: null
+  });
 
+  const updateSelection = (update: Partial<Selection>, source: 'plot' | 'buttons' | 'image-change') => {
+    if (source === 'plot') {
+      if (update.xValue !== null) {
+        const { method, bpp } = getNearestMethodAndBpp(update.xValue);
+        setSelection({
+          method,
+          bpp,
+          xValue: update.xValue
+        });
+      }
+    } else if (source === 'buttons') {
+      setSelection(prev => ({
+        method: update.method ?? prev.method,
+        bpp: update.bpp ?? prev.bpp,
+        xValue: update.bpp  // Set xValue to match bpp when coming from buttons
+      }));
+    } else {
+    // image-change
+    const methods = getMethodsForImage(selectedImage);
+    const newMethod = methods.includes(selection.method) ? selection.method : methods[0];
+    
+    // Get available BPPs for the new method
+    const availableBpps = getBitratesForMethod(selectedImage, newMethod);
+    
+    // If we had a previous BPP, find the closest new one
+    let newBpp = null;
+    if (selection.bpp !== null && availableBpps.length > 0) {
+      newBpp = availableBpps.reduce((closest, current) => {
+        const currentDiff = Math.abs(current - selection.bpp!);
+        const closestDiff = Math.abs(closest - selection.bpp!);
+        return currentDiff < closestDiff ? current : closest;
+      }, availableBpps[0]);
+    } else {
+      // If no previous BPP, fall back to first available
+      newBpp = availableBpps[0] || null;
+    }
+    
+    setSelection({
+      method: newMethod,
+      bpp: newBpp,
+      xValue: newBpp
+    });
+    }
+  };
+  
   // Helper to find closest bpp value
   const findClosestBpp = (targetBpp, availableBpps) => {
     if (!availableBpps.length) return null;
@@ -156,48 +179,25 @@ const ImageComparisonWidget = ({ data }) => {
   // Initialize or update selected method when image changes
   useEffect(() => {
     if (selectedImage) {
-      const availableMethods = getMethodsForImage(selectedImage);
-      
-      // If current method isn't available for new image, select first available method
-      if (!availableMethods.includes(selectedMethod)) {
-        setSelectedMethod(availableMethods[0] || null);
-      }
+      updateSelection({}, 'image-change');
     }
   }, [selectedImage]);
-
+  
   // Get available bitrates for current method
   const getBitratesForMethod = (imageName, method) => {
     if (!method || !data[imageName] || !data[imageName][method]) return [];
     return data[imageName][method].map(item => item.bpp).sort((a, b) => a - b);
   };
 
-  const bitrates = getBitratesForMethod(selectedImage, selectedMethod);
-
-  // Initialize or update selected bitrate when method changes
-  useEffect(() => {
-    if (selectedMethod && selectedImage) {
-      const availableBpps = getBitratesForMethod(selectedImage, selectedMethod);
-      
-      if (selectedBpp !== null) {
-        // Find closest available bpp to current selection
-        const closestBpp = findClosestBpp(selectedBpp, availableBpps);
-        setSelectedBpp(closestBpp);
-        setStuckValue(closestBpp);
-      } else {
-        // If no bpp selected, select first available
-        setSelectedBpp(availableBpps[0] || null);
-        setStuckValue(availableBpps[0] || null);
-      }
-    }
-  }, [selectedMethod, selectedImage]);
+  const bitrates = getBitratesForMethod(selectedImage, selection.method);
 
   const getCurrentTriple = () => {
-    if (!selectedImage || !selectedMethod || selectedBpp === null) return null;
+    if (!selectedImage || !selection.method || selection.bpp === null) return null;
     
     const imageData = data[selectedImage];
-    if (!imageData || !imageData[selectedMethod]) return null;
+    if (!imageData || !imageData[selection.method]) return null;
 
-    const selectedComparison = imageData[selectedMethod].find(item => item.bpp === selectedBpp);
+    const selectedComparison = imageData[selection.method].find(item => item.bpp === selection.bpp);
     if (!selectedComparison) return null;
 
     return {
@@ -219,7 +219,7 @@ const ImageComparisonWidget = ({ data }) => {
 
     return {
       labelA,
-      labelB: selectedMethod,
+      labelB: selection.method,
       labelC: "Ground Truth"
     };
   };
@@ -228,19 +228,13 @@ const ImageComparisonWidget = ({ data }) => {
     setSelectedImage(imageName);
   };
 
-  const handleBppSelect = (method, bpp) => {
-    setSelectedMethod(method);
-    setSelectedBpp(bpp);
-    setStuckValue(bpp); // Update the vertical line when buttons are clicked
+  const handleBppSelect = (method: string, bpp: number) => {
+    updateSelection({ method, bpp }, 'buttons');
   };
-
-  const handlePlotXValueChange = (xValue) => {
+  
+  const handlePlotXValueChange = (xValue: number | null) => {
     if (xValue !== null) {
-      const { method, bpp } = getNearestMethodAndBpp(xValue, data, selectedImage, getMethodsForImage);
-      if (method && bpp !== null) {
-        setSelectedMethod(method);
-        setSelectedBpp(bpp);
-      }
+      updateSelection({ xValue }, 'plot');
     }
   };
 
@@ -328,7 +322,7 @@ const ImageComparisonWidget = ({ data }) => {
             key={method}
             method={method}
             bitrates={getBitratesForMethod(selectedImage, method)}
-            selectedBpp={selectedMethod === method ? selectedBpp : null}
+            selectedBpp={selection.method === method ? selection.bpp : null}
             onBppSelect={handleBppSelect}
           />
         ))}
@@ -348,8 +342,7 @@ const ImageComparisonWidget = ({ data }) => {
             y1Label="PSNR (dB)"
             y2Label="LPIPS"
             onXValueChange={handlePlotXValueChange}
-            stuckX={stuckValue} // Pass the current bpp as the stuck value
-            setStuckX={setStuckValue}
+            stuckX={selection.xvalue} // Pass the current bpp as the stuck value
           />
         </div>
       )}
