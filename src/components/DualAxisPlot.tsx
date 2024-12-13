@@ -123,7 +123,6 @@ const DualAxisPlot = ({
 
   // Create paths and points for y1 lines  
   const y1Elements = y1Arrays.map((yArray, index) => {
-    console.log("methods and index:", methods, index)
     const methodKey = methods[index];
     const color = methodNamesAndColors[methodKey].color;
     return (

@@ -46,17 +46,7 @@ export const components = {pre: CodeBlock, table: Table}
       institution: "Portland State University",
     },
   ]}
-  conference="ICLR 2024"
-  notes={[
-    {
-      symbol: "*",
-      text: "author note one",
-    },
-    {
-      symbol: "†",
-      text: "author note two",
-    },
-  ]}
+  conference="ICLR 2024 I Hope"
   links={[
     {
       name: "Paper",
@@ -76,71 +66,28 @@ export const components = {pre: CodeBlock, table: Table}
   ]}
   />
 
-We apply the DiffC algorithm to Stable Diffusion 1.5, 2.1, XL, and Flux-dev, and demonstrate that these pretrained models are remarkably capable lossy image compressors. A principled algorithm for lossy compression using pretrained diffusion models has been understood since at least Ho et al, but challenges in reverse-channel coding have prevented such algorithms from ever being fully implemented. We introduce simple workarounds that lead to the first complete implementation of DiffC, which is capable of compressing and decompressing images using Stable Diffusion in under 10 seconds. Despite requiring no additional training, our method is competitive with other state-of-the-art generative compression methods at low ultra-low bitrates.
+We apply the DiffC algorithm[^1] to Stable Diffusion[^2] 1.5, 2.1, XL, and Flux-dev[^3], and demonstrate that these pretrained models are remarkably capable lossy image compressors. A principled algorithm for lossy compression using pretrained diffusion models has been understood since at least Ho et al.[^4], but challenges in reverse-channel coding have prevented such algorithms from ever being fully implemented. We introduce simple workarounds that lead to the first complete implementation of DiffC, which is capable of compressing and decompressing images using Stable Diffusion in under 10 seconds. Despite requiring no additional training, our method is competitive with other state-of-the-art generative compression methods at low ultra-low bitrates.
 
 <ImageComparisonWidget client:load data={demoData} />
 
+The following video shows lossy reconstructions at each of Flux's 1,000 timesteps:
+
 <Video source={dogs} />
 
-## Figures
-
-Use the figure component to display images, videos, equations, or any other element, with an optional caption.
-
-<Figure
-    caption="Diagram of the transformer deep learning architecture."
-  >
-    <Image source={transformer} altText="Diagram of the transformer deep learning architecture." />
-</Figure>
-
-## Two columns
-
-Use the two columns component to display two columns of content. In this example, the first column contains a figure with a YouTube video and the second column contains a figure with a custom [React](https://react.dev/) component. By default, they display side by side, but if the screen is narrow enough (for example, on mobile), they're arranged vertically.
-
-<TwoColumns>
-  <Figure slot="left" caption="Take a look at this YouTube video.">
-    <YouTubeVideo videoId="wjZofJX0v4M" />
-  </Figure>
-  <Figure slot="right" caption="Now look at this Gaussian Splat, rendered with a React component.">
-    <Splat client:idle />
-  </Figure>
-</TwoColumns>
-
-## Heading levels
-
-Use headings to divide your content into sections.
-
-### Heading 3
-
-Go down a level to heading 3...
-
-#### Heading 4
-
-...and down again to heading 4.
-
-## LaTeX
-
-You can also add LaTeX formulas, rendered during the build process using [KaTeX](https://katex.org/) so they're quick to load for visitors of your project page. You can write them inline, like this: <LaTeX inline formula="a^2 + b^2 = c^2" />. Or, you can write them as a block:
-
-<LaTeX formula="\int_a^b f(x) dx" />
-
-## Tables
-
-You can add simple tables using [GitHub Flavored Markdown syntax](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/organizing-information-with-tables):
-
-| Model | Accuracy | F1 score | Training time (hours) |
-| :--- | :---: | :---: | :---: |
-| BERT-base | 0.89 | 0.87 | 4.5 |
-| RoBERTa-large | 0.92 | 0.91 | 7.2 |
-| DistilBERT | 0.86 | 0.84 | 2.1 |
-| XLNet | 0.90 | 0.89 | 6.8 |
-
-## BibTeX citation
+## Citation
 
 ```bibtex
-@misc{roman2024academic,
-  author = "{Roman Hauksson}",
+@misc{Vonderfecht2024lossy,
+  author = "{Jeremy Vonderfecht, Feng Liu}",
   title = "Lossy Compression With Pretrained Diffusion Models",
   year = "2024",
-  howpublished = "\url{https://research-template.roman.technology}",
 }
 ```
+
+[^1]: Theis, L., Salimans, T., Hoffman, M. D., & Mentzer, F. (2022). [Lossy compression with gaussian diffusion](https://arxiv.org/abs/2206.08889). arXiv preprint arXiv:2206.08889.
+
+[^2]: [Stable Diffusion Web UI](https://huggingface.co/spaces/stabilityai/stable-diffusion)
+
+[^3]: [FLUX.1-dev model](https://huggingface.co/black-forest-labs/FLUX.1-dev)
+
+[^4]: Ho, J., Jain, A., & Abbeel, P. (2020). [Denoising diffusion probabilistic models](https://arxiv.org/abs/2006.11239). Advances in Neural Information Processing Systems, 33, 6840-6851.
