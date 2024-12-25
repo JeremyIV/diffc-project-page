@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { MoveHorizontal, MoveVertical } from 'lucide-react';
 
 const ThreeWaySlider = ({
     imageA, 
@@ -118,8 +119,8 @@ const ThreeWaySlider = ({
             }}
             onMouseDown={() => isDraggingHorizontal.current = true}
           >
-            <div className="absolute top-2 left-1/2 -translate-x-1/2 w-6 h-6 bg-white rounded-full shadow-lg flex items-center justify-center">
-              ↔
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-white shadow-lg flex items-center justify-center rotate-45 rounded-sm transform">
+              <MoveHorizontal size={20} className="-rotate-45" strokeWidth={3} />
             </div>
           </div>
   
@@ -127,10 +128,10 @@ const ThreeWaySlider = ({
           <div 
             className="absolute left-0 right-0 h-1 bg-white/50 cursor-ns-resize"
             style={{ top: `${verticalPosition}%` }}
-            onMouseDown={() => isDraggingVertical.current = true}
+            onMouseDown={() => isDraggingVertical.current = true} 
           >
-            <div className="absolute left-2 top-1/2 -translate-y-1/2 w-6 h-6 bg-white rounded-full shadow-lg flex items-center justify-center">
-              ↕
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-9 h-9 rotate-45 bg-white shadow-lg flex items-center justify-center rounded-sm text-lg">
+              <MoveVertical size={24} className="-rotate-45" strokeWidth={3} />
             </div>
           </div>
         </div>
