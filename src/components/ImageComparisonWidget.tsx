@@ -68,7 +68,7 @@ const MethodSelector = ({ method, displayName, bitrates, selectedBpp, onBppSelec
           }`}
           style={selectedBpp === bpp ? { backgroundColor: methodNamesAndColors[method].color } : undefined}
         >
-          {bpp.toFixed(4)}
+          {bpp.toFixed(4) + " bpp"} 
         </button>
       ))}
     </div>
