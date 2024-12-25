@@ -66,7 +66,7 @@ export const components = {pre: CodeBlock, table: Table}
   ]}
   />
 
-We apply the DiffC algorithm[^1] to Stable Diffusion[^2] 1.5, 2.1, XL, and Flux-dev[^3], and demonstrate that these pretrained models are remarkably capable lossy image compressors. A principled algorithm for lossy compression using pretrained diffusion models has been understood since at least Ho et al.[^4], but challenges in reverse-channel coding have prevented such algorithms from ever being fully implemented. We introduce simple workarounds that lead to the first complete implementation of DiffC, which is capable of compressing and decompressing images using Stable Diffusion in under 10 seconds. Despite requiring no additional training, our method is competitive with other state-of-the-art generative compression methods at low ultra-low bitrates.
+We apply the DiffC algorithm[^1] to [Stable Diffusion](https://huggingface.co/stabilityai/stable-diffusion-2-1) 1.5, 2.1, XL, and [Flux-dev](https://huggingface.co/black-forest-labs/FLUX.1-dev), and demonstrate that these pretrained models are remarkably capable lossy image compressors. A principled algorithm for lossy compression using pretrained diffusion models has been understood since at least Ho et al.[^2], but challenges in reverse-channel coding have prevented such algorithms from ever being fully implemented. We introduce simple workarounds that lead to the first complete implementation of DiffC, which is capable of compressing and decompressing images using Stable Diffusion in under 10 seconds. Despite requiring no additional training, our method is competitive with other state-of-the-art generative compression methods at low ultra-low bitrates.
 
 <ImageComparisonWidget client:load data={demoData} />
 
@@ -86,8 +86,4 @@ The following video shows lossy reconstructions at each of Flux's 1,000 timestep
 
 [^1]: Theis, L., Salimans, T., Hoffman, M. D., & Mentzer, F. (2022). [Lossy compression with gaussian diffusion](https://arxiv.org/abs/2206.08889). arXiv preprint arXiv:2206.08889.
 
-[^2]: [Stable Diffusion Web UI](https://huggingface.co/spaces/stabilityai/stable-diffusion)
-
-[^3]: [FLUX.1-dev model](https://huggingface.co/black-forest-labs/FLUX.1-dev)
-
-[^4]: Ho, J., Jain, A., & Abbeel, P. (2020). [Denoising diffusion probabilistic models](https://arxiv.org/abs/2006.11239). Advances in Neural Information Processing Systems, 33, 6840-6851.
+[^2]: Ho, J., Jain, A., & Abbeel, P. (2020). [Denoising diffusion probabilistic models](https://arxiv.org/abs/2006.11239). Advances in Neural Information Processing Systems, 33, 6840-6851.

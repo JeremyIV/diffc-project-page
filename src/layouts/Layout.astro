@@ -67,6 +67,19 @@ const prefix = baseUrl.endsWith("/") ? baseUrl : baseUrl + "/";
 </html>
 
 <style is:global>
+  .footnotes {
+    @apply w-full;
+  }
+
+  .footnotes ol {
+    @apply max-w-[60rem] px-6 mx-auto;
+  }
+  .footnotes p {
+    @apply w-full max-w-none;
+  }
+  .footnotes ol {
+    @apply max-w-[60rem] px-6 mx-auto list-decimal list-outside ml-10;
+  }
   body {
     font-family: "Noto Sans", sans-serif;
     @apply text-zinc-900 bg-zinc-50;
