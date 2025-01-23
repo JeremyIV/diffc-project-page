@@ -1,6 +1,6 @@
 export const demoData = {
   "kodak-06": {
-    "ground_truth": "demo-images/kodak-06/gt.png",
+    "ground_truth": "demo-images/kodak-06/gt.jpg",
     "diffc_bpp": [
       0.00010172526041666667,
       0.00014241536458333334,
@@ -489,32 +489,32 @@ export const demoData = {
     ],
     "msillm": [
       {
-        "baseline": "demo-images/kodak-06/msillm/0.0057/baseline.png",
-        "diffc": "demo-images/kodak-06/msillm/0.0057/diffc.png",
+        "baseline": "demo-images/kodak-06/msillm/0.0057/baseline.jpg",
+        "diffc": "demo-images/kodak-06/msillm/0.0057/diffc.jpg",
         "bpp": 0.0057,
         "size": "280 B",
         "lpips": 0.4331827461719513,
         "psnr": 20.691514049446482
       },
       {
-        "baseline": "demo-images/kodak-06/msillm/0.0077/baseline.png",
-        "diffc": "demo-images/kodak-06/msillm/0.0077/diffc.png",
+        "baseline": "demo-images/kodak-06/msillm/0.0077/baseline.jpg",
+        "diffc": "demo-images/kodak-06/msillm/0.0077/diffc.jpg",
         "bpp": 0.0077,
         "size": "378 B",
         "lpips": 0.3422240912914276,
         "psnr": 21.18472755985641
       },
       {
-        "baseline": "demo-images/kodak-06/msillm/0.0400/baseline.png",
-        "diffc": "demo-images/kodak-06/msillm/0.0400/diffc.png",
+        "baseline": "demo-images/kodak-06/msillm/0.0400/baseline.jpg",
+        "diffc": "demo-images/kodak-06/msillm/0.0400/diffc.jpg",
         "bpp": 0.04,
         "size": "1 KB",
         "lpips": 0.15226459503173828,
         "psnr": 23.271984195057655
       },
       {
-        "baseline": "demo-images/kodak-06/msillm/0.0789/baseline.png",
-        "diffc": "demo-images/kodak-06/msillm/0.0789/diffc.png",
+        "baseline": "demo-images/kodak-06/msillm/0.0789/baseline.jpg",
+        "diffc": "demo-images/kodak-06/msillm/0.0789/diffc.jpg",
         "bpp": 0.0789,
         "size": "3 KB",
         "lpips": 0.10953672230243683,
@@ -523,40 +523,40 @@ export const demoData = {
     ],
     "diffeic": [
       {
-        "baseline": "demo-images/kodak-06/diffeic/0.0198/baseline.png",
-        "diffc": "demo-images/kodak-06/diffeic/0.0198/diffc.png",
+        "baseline": "demo-images/kodak-06/diffeic/0.0198/baseline.jpg",
+        "diffc": "demo-images/kodak-06/diffeic/0.0198/diffc.jpg",
         "bpp": 0.0198,
         "size": "973 B",
         "lpips": 0.273587703704834,
         "psnr": 19.42813888524434
       },
       {
-        "baseline": "demo-images/kodak-06/diffeic/0.0341/baseline.png",
-        "diffc": "demo-images/kodak-06/diffeic/0.0341/diffc.png",
+        "baseline": "demo-images/kodak-06/diffeic/0.0341/baseline.jpg",
+        "diffc": "demo-images/kodak-06/diffeic/0.0341/diffc.jpg",
         "bpp": 0.0341,
         "size": "1 KB",
         "lpips": 0.23099882900714874,
         "psnr": 19.59284267836576
       },
       {
-        "baseline": "demo-images/kodak-06/diffeic/0.0570/baseline.png",
-        "diffc": "demo-images/kodak-06/diffeic/0.0570/diffc.png",
+        "baseline": "demo-images/kodak-06/diffeic/0.0570/baseline.jpg",
+        "diffc": "demo-images/kodak-06/diffeic/0.0570/diffc.jpg",
         "bpp": 0.057,
         "size": "2 KB",
         "lpips": 0.17395378649234772,
         "psnr": 20.952867813916747
       },
       {
-        "baseline": "demo-images/kodak-06/diffeic/0.0872/baseline.png",
-        "diffc": "demo-images/kodak-06/diffeic/0.0872/diffc.png",
+        "baseline": "demo-images/kodak-06/diffeic/0.0872/baseline.jpg",
+        "diffc": "demo-images/kodak-06/diffeic/0.0872/diffc.jpg",
         "bpp": 0.0872,
         "size": "4 KB",
         "lpips": 0.1310381144285202,
         "psnr": 22.397760782560706
       },
       {
-        "baseline": "demo-images/kodak-06/diffeic/0.1187/baseline.png",
-        "diffc": "demo-images/kodak-06/diffeic/0.1187/diffc.png",
+        "baseline": "demo-images/kodak-06/diffeic/0.1187/baseline.jpg",
+        "diffc": "demo-images/kodak-06/diffeic/0.1187/diffc.jpg",
         "bpp": 0.1187,
         "size": "5 KB",
         "lpips": 0.11176758259534836,
@@ -565,24 +565,24 @@ export const demoData = {
     ],
     "perco": [
       {
-        "baseline": "demo-images/kodak-06/perco/0.0030/baseline.png",
-        "diffc": "demo-images/kodak-06/perco/0.0030/diffc.png",
+        "baseline": "demo-images/kodak-06/perco/0.0030/baseline.jpg",
+        "diffc": "demo-images/kodak-06/perco/0.0030/diffc.jpg",
         "bpp": 0.003,
         "size": "147 B",
         "lpips": 0.4231157898902893,
         "psnr": 16.345905066410026
       },
       {
-        "baseline": "demo-images/kodak-06/perco/0.032/baseline.png",
-        "diffc": "demo-images/kodak-06/perco/0.032/diffc.png",
+        "baseline": "demo-images/kodak-06/perco/0.032/baseline.jpg",
+        "diffc": "demo-images/kodak-06/perco/0.032/diffc.jpg",
         "bpp": 0.032,
         "size": "1 KB",
         "lpips": 0.2668108642101288,
         "psnr": 19.94179900004225
       },
       {
-        "baseline": "demo-images/kodak-06/perco/0.126/baseline.png",
-        "diffc": "demo-images/kodak-06/perco/0.126/diffc.png",
+        "baseline": "demo-images/kodak-06/perco/0.126/baseline.jpg",
+        "diffc": "demo-images/kodak-06/perco/0.126/diffc.jpg",
         "bpp": 0.126,
         "size": "6 KB",
         "lpips": 0.14333705604076385,
@@ -591,7 +591,7 @@ export const demoData = {
     ]
   },
   "kodak-23": {
-    "ground_truth": "demo-images/kodak-23/gt.png",
+    "ground_truth": "demo-images/kodak-23/gt.jpg",
     "diffc_bpp": [
       0.00010172526041666667,
       0.00014241536458333334,
@@ -1080,24 +1080,24 @@ export const demoData = {
     ],
     "perco": [
       {
-        "baseline": "demo-images/kodak-23/perco/0.0033/baseline.png",
-        "diffc": "demo-images/kodak-23/perco/0.0033/diffc.png",
+        "baseline": "demo-images/kodak-23/perco/0.0033/baseline.jpg",
+        "diffc": "demo-images/kodak-23/perco/0.0033/diffc.jpg",
         "bpp": 0.0033,
         "size": "162 B",
         "lpips": 0.3867451548576355,
         "psnr": 16.306193517983488
       },
       {
-        "baseline": "demo-images/kodak-23/perco/0.032/baseline.png",
-        "diffc": "demo-images/kodak-23/perco/0.032/diffc.png",
+        "baseline": "demo-images/kodak-23/perco/0.032/baseline.jpg",
+        "diffc": "demo-images/kodak-23/perco/0.032/diffc.jpg",
         "bpp": 0.032,
         "size": "1 KB",
         "lpips": 0.19582287967205048,
         "psnr": 20.93567383455354
       },
       {
-        "baseline": "demo-images/kodak-23/perco/0.126/baseline.png",
-        "diffc": "demo-images/kodak-23/perco/0.126/diffc.png",
+        "baseline": "demo-images/kodak-23/perco/0.126/baseline.jpg",
+        "diffc": "demo-images/kodak-23/perco/0.126/diffc.jpg",
         "bpp": 0.126,
         "size": "6 KB",
         "lpips": 0.07922594994306564,
@@ -1106,40 +1106,40 @@ export const demoData = {
     ],
     "msillm": [
       {
-        "baseline": "demo-images/kodak-23/msillm/0.0071/baseline.png",
-        "diffc": "demo-images/kodak-23/msillm/0.0071/diffc.png",
+        "baseline": "demo-images/kodak-23/msillm/0.0071/baseline.jpg",
+        "diffc": "demo-images/kodak-23/msillm/0.0071/diffc.jpg",
         "bpp": 0.0071,
         "size": "348 B",
         "lpips": 0.3866400718688965,
         "psnr": 21.834032447781414
       },
       {
-        "baseline": "demo-images/kodak-23/msillm/0.0096/baseline.png",
-        "diffc": "demo-images/kodak-23/msillm/0.0096/diffc.png",
+        "baseline": "demo-images/kodak-23/msillm/0.0096/baseline.jpg",
+        "diffc": "demo-images/kodak-23/msillm/0.0096/diffc.jpg",
         "bpp": 0.0096,
         "size": "471 B",
         "lpips": 0.2834967374801636,
         "psnr": 23.667535867623563
       },
       {
-        "baseline": "demo-images/kodak-23/msillm/0.0372/baseline.png",
-        "diffc": "demo-images/kodak-23/msillm/0.0372/diffc.png",
+        "baseline": "demo-images/kodak-23/msillm/0.0372/baseline.jpg",
+        "diffc": "demo-images/kodak-23/msillm/0.0372/diffc.jpg",
         "bpp": 0.0372,
         "size": "1 KB",
         "lpips": 0.09582826495170593,
         "psnr": 27.43107627344135
       },
       {
-        "baseline": "demo-images/kodak-23/msillm/0.0644/baseline.png",
-        "diffc": "demo-images/kodak-23/msillm/0.0644/diffc.png",
+        "baseline": "demo-images/kodak-23/msillm/0.0644/baseline.jpg",
+        "diffc": "demo-images/kodak-23/msillm/0.0644/diffc.jpg",
         "bpp": 0.0644,
         "size": "3 KB",
         "lpips": 0.058707937598228455,
         "psnr": 29.09032523058653
       },
       {
-        "baseline": "demo-images/kodak-23/msillm/0.1152/baseline.png",
-        "diffc": "demo-images/kodak-23/msillm/0.1152/diffc.png",
+        "baseline": "demo-images/kodak-23/msillm/0.1152/baseline.jpg",
+        "diffc": "demo-images/kodak-23/msillm/0.1152/diffc.jpg",
         "bpp": 0.1152,
         "size": "5 KB",
         "lpips": 0.035457585006952286,
@@ -1148,40 +1148,40 @@ export const demoData = {
     ],
     "diffeic": [
       {
-        "baseline": "demo-images/kodak-23/diffeic/0.0147/baseline.png",
-        "diffc": "demo-images/kodak-23/diffeic/0.0147/diffc.png",
+        "baseline": "demo-images/kodak-23/diffeic/0.0147/baseline.jpg",
+        "diffc": "demo-images/kodak-23/diffeic/0.0147/diffc.jpg",
         "bpp": 0.0147,
         "size": "722 B",
         "lpips": 0.24906909465789795,
         "psnr": 21.331487040731695
       },
       {
-        "baseline": "demo-images/kodak-23/diffeic/0.0273/baseline.png",
-        "diffc": "demo-images/kodak-23/diffeic/0.0273/diffc.png",
+        "baseline": "demo-images/kodak-23/diffeic/0.0273/baseline.jpg",
+        "diffc": "demo-images/kodak-23/diffeic/0.0273/diffc.jpg",
         "bpp": 0.0273,
         "size": "1 KB",
         "lpips": 0.19174346327781677,
         "psnr": 22.258061118219786
       },
       {
-        "baseline": "demo-images/kodak-23/diffeic/0.0474/baseline.png",
-        "diffc": "demo-images/kodak-23/diffeic/0.0474/diffc.png",
+        "baseline": "demo-images/kodak-23/diffeic/0.0474/baseline.jpg",
+        "diffc": "demo-images/kodak-23/diffeic/0.0474/diffc.jpg",
         "bpp": 0.0474,
         "size": "2 KB",
         "lpips": 0.1184483990073204,
         "psnr": 24.531160801668456
       },
       {
-        "baseline": "demo-images/kodak-23/diffeic/0.0759/baseline.png",
-        "diffc": "demo-images/kodak-23/diffeic/0.0759/diffc.png",
+        "baseline": "demo-images/kodak-23/diffeic/0.0759/baseline.jpg",
+        "diffc": "demo-images/kodak-23/diffeic/0.0759/diffc.jpg",
         "bpp": 0.0759,
         "size": "3 KB",
         "lpips": 0.07318126410245895,
         "psnr": 26.703861005270703
       },
       {
-        "baseline": "demo-images/kodak-23/diffeic/0.1060/baseline.png",
-        "diffc": "demo-images/kodak-23/diffeic/0.1060/diffc.png",
+        "baseline": "demo-images/kodak-23/diffeic/0.1060/baseline.jpg",
+        "diffc": "demo-images/kodak-23/diffeic/0.1060/diffc.jpg",
         "bpp": 0.106,
         "size": "5 KB",
         "lpips": 0.05652971565723419,
@@ -1190,7 +1190,7 @@ export const demoData = {
     ]
   },
   "kodak-22": {
-    "ground_truth": "demo-images/kodak-22/gt.png",
+    "ground_truth": "demo-images/kodak-22/gt.jpg",
     "diffc_bpp": [
       0.00010172526041666667,
       0.00014241536458333334,
@@ -1679,24 +1679,24 @@ export const demoData = {
     ],
     "perco": [
       {
-        "baseline": "demo-images/kodak-22/perco/0.0029/baseline.png",
-        "diffc": "demo-images/kodak-22/perco/0.0029/diffc.png",
+        "baseline": "demo-images/kodak-22/perco/0.0029/baseline.jpg",
+        "diffc": "demo-images/kodak-22/perco/0.0029/diffc.jpg",
         "bpp": 0.0029,
         "size": "142 B",
         "lpips": 0.6143562197685242,
         "psnr": 18.166748617069878
       },
       {
-        "baseline": "demo-images/kodak-22/perco/0.032/baseline.png",
-        "diffc": "demo-images/kodak-22/perco/0.032/diffc.png",
+        "baseline": "demo-images/kodak-22/perco/0.032/baseline.jpg",
+        "diffc": "demo-images/kodak-22/perco/0.032/diffc.jpg",
         "bpp": 0.032,
         "size": "1 KB",
         "lpips": 0.3812848627567291,
         "psnr": 20.138892287216787
       },
       {
-        "baseline": "demo-images/kodak-22/perco/0.126/baseline.png",
-        "diffc": "demo-images/kodak-22/perco/0.126/diffc.png",
+        "baseline": "demo-images/kodak-22/perco/0.126/baseline.jpg",
+        "diffc": "demo-images/kodak-22/perco/0.126/diffc.jpg",
         "bpp": 0.126,
         "size": "6 KB",
         "lpips": 0.1733267456293106,
@@ -1705,40 +1705,40 @@ export const demoData = {
     ],
     "msillm": [
       {
-        "baseline": "demo-images/kodak-22/msillm/0.0057/baseline.png",
-        "diffc": "demo-images/kodak-22/msillm/0.0057/diffc.png",
+        "baseline": "demo-images/kodak-22/msillm/0.0057/baseline.jpg",
+        "diffc": "demo-images/kodak-22/msillm/0.0057/diffc.jpg",
         "bpp": 0.0057,
         "size": "280 B",
         "lpips": 0.5311417579650879,
         "psnr": 21.324495917360174
       },
       {
-        "baseline": "demo-images/kodak-22/msillm/0.0080/baseline.png",
-        "diffc": "demo-images/kodak-22/msillm/0.0080/diffc.png",
+        "baseline": "demo-images/kodak-22/msillm/0.0080/baseline.jpg",
+        "diffc": "demo-images/kodak-22/msillm/0.0080/diffc.jpg",
         "bpp": 0.008,
         "size": "393 B",
         "lpips": 0.4323580265045166,
         "psnr": 22.030528745063222
       },
       {
-        "baseline": "demo-images/kodak-22/msillm/0.0393/baseline.png",
-        "diffc": "demo-images/kodak-22/msillm/0.0393/diffc.png",
+        "baseline": "demo-images/kodak-22/msillm/0.0393/baseline.jpg",
+        "diffc": "demo-images/kodak-22/msillm/0.0393/diffc.jpg",
         "bpp": 0.0393,
         "size": "1 KB",
         "lpips": 0.19354267418384552,
         "psnr": 24.81336263618207
       },
       {
-        "baseline": "demo-images/kodak-22/msillm/0.0744/baseline.png",
-        "diffc": "demo-images/kodak-22/msillm/0.0744/diffc.png",
+        "baseline": "demo-images/kodak-22/msillm/0.0744/baseline.jpg",
+        "diffc": "demo-images/kodak-22/msillm/0.0744/diffc.jpg",
         "bpp": 0.0744,
         "size": "3 KB",
         "lpips": 0.13653017580509186,
         "psnr": 25.74276034738507
       },
       {
-        "baseline": "demo-images/kodak-22/msillm/0.1463/baseline.png",
-        "diffc": "demo-images/kodak-22/msillm/0.1463/diffc.png",
+        "baseline": "demo-images/kodak-22/msillm/0.1463/baseline.jpg",
+        "diffc": "demo-images/kodak-22/msillm/0.1463/diffc.jpg",
         "bpp": 0.1463,
         "size": "7 KB",
         "lpips": 0.09509291499853134,
@@ -1747,40 +1747,40 @@ export const demoData = {
     ],
     "diffeic": [
       {
-        "baseline": "demo-images/kodak-22/diffeic/0.0208/baseline.png",
-        "diffc": "demo-images/kodak-22/diffeic/0.0208/diffc.png",
+        "baseline": "demo-images/kodak-22/diffeic/0.0208/baseline.jpg",
+        "diffc": "demo-images/kodak-22/diffeic/0.0208/diffc.jpg",
         "bpp": 0.0208,
         "size": "1022 B",
         "lpips": 0.38961061835289,
         "psnr": 20.59590525928529
       },
       {
-        "baseline": "demo-images/kodak-22/diffeic/0.0422/baseline.png",
-        "diffc": "demo-images/kodak-22/diffeic/0.0422/diffc.png",
+        "baseline": "demo-images/kodak-22/diffeic/0.0422/baseline.jpg",
+        "diffc": "demo-images/kodak-22/diffeic/0.0422/diffc.jpg",
         "bpp": 0.0422,
         "size": "2 KB",
         "lpips": 0.2972283959388733,
         "psnr": 22.442970160671752
       },
       {
-        "baseline": "demo-images/kodak-22/diffeic/0.0670/baseline.png",
-        "diffc": "demo-images/kodak-22/diffeic/0.0670/diffc.png",
+        "baseline": "demo-images/kodak-22/diffeic/0.0670/baseline.jpg",
+        "diffc": "demo-images/kodak-22/diffeic/0.0670/diffc.jpg",
         "bpp": 0.067,
         "size": "3 KB",
         "lpips": 0.22129684686660767,
         "psnr": 23.521192864336385
       },
       {
-        "baseline": "demo-images/kodak-22/diffeic/0.0987/baseline.png",
-        "diffc": "demo-images/kodak-22/diffeic/0.0987/diffc.png",
+        "baseline": "demo-images/kodak-22/diffeic/0.0987/baseline.jpg",
+        "diffc": "demo-images/kodak-22/diffeic/0.0987/diffc.jpg",
         "bpp": 0.0987,
         "size": "4 KB",
         "lpips": 0.16502687335014343,
         "psnr": 24.50005722831962
       },
       {
-        "baseline": "demo-images/kodak-22/diffeic/0.1318/baseline.png",
-        "diffc": "demo-images/kodak-22/diffeic/0.1318/diffc.png",
+        "baseline": "demo-images/kodak-22/diffeic/0.1318/baseline.jpg",
+        "diffc": "demo-images/kodak-22/diffeic/0.1318/diffc.jpg",
         "bpp": 0.1318,
         "size": "6 KB",
         "lpips": 0.13566526770591736,
@@ -1789,7 +1789,7 @@ export const demoData = {
     ]
   },
   "div2k-0002": {
-    "ground_truth": "demo-images/div2k-0002/gt.png",
+    "ground_truth": "demo-images/div2k-0002/gt.jpg",
     "diffc_bpp": [
       0.0006167763157894736,
       0.0008460905870445345,
@@ -2251,64 +2251,64 @@ export const demoData = {
     ],
     "msillm": [
       {
-        "baseline": "demo-images/div2k-0002/msillm/0.0037/baseline.png",
-        "diffc": "demo-images/div2k-0002/msillm/0.0037/diffc.png",
+        "baseline": "demo-images/div2k-0002/msillm/0.0037/baseline.jpg",
+        "diffc": "demo-images/div2k-0002/msillm/0.0037/diffc.jpg",
         "bpp": 0.0037,
         "size": "467 B",
         "lpips": 0.6004292368888855,
         "psnr": 20.38275332401578
       },
       {
-        "baseline": "demo-images/div2k-0002/msillm/0.0060/baseline.png",
-        "diffc": "demo-images/div2k-0002/msillm/0.0060/diffc.png",
+        "baseline": "demo-images/div2k-0002/msillm/0.0060/baseline.jpg",
+        "diffc": "demo-images/div2k-0002/msillm/0.0060/diffc.jpg",
         "bpp": 0.006,
         "size": "758 B",
         "lpips": 0.46548470854759216,
         "psnr": 21.026841988672054
       },
       {
-        "baseline": "demo-images/div2k-0002/msillm/0.0373/baseline.png",
-        "diffc": "demo-images/div2k-0002/msillm/0.0373/diffc.png",
+        "baseline": "demo-images/div2k-0002/msillm/0.0373/baseline.jpg",
+        "diffc": "demo-images/div2k-0002/msillm/0.0373/diffc.jpg",
         "bpp": 0.0373,
         "size": "4 KB",
         "lpips": 0.20417015254497528,
         "psnr": 22.91887274857087
       },
       {
-        "baseline": "demo-images/div2k-0002/msillm/0.0730/baseline.png",
-        "diffc": "demo-images/div2k-0002/msillm/0.0730/diffc.png",
+        "baseline": "demo-images/div2k-0002/msillm/0.0730/baseline.jpg",
+        "diffc": "demo-images/div2k-0002/msillm/0.0730/diffc.jpg",
         "bpp": 0.073,
         "size": "9 KB",
         "lpips": 0.15259185433387756,
         "psnr": 23.690178313982955
       },
       {
-        "baseline": "demo-images/div2k-0002/msillm/0.1517/baseline.png",
-        "diffc": "demo-images/div2k-0002/msillm/0.1517/diffc.png",
+        "baseline": "demo-images/div2k-0002/msillm/0.1517/baseline.jpg",
+        "diffc": "demo-images/div2k-0002/msillm/0.1517/diffc.jpg",
         "bpp": 0.1517,
         "size": "18 KB",
         "lpips": 0.11118552088737488,
         "psnr": 24.85680158405412
       },
       {
-        "baseline": "demo-images/div2k-0002/msillm/0.3037/baseline.png",
-        "diffc": "demo-images/div2k-0002/msillm/0.3037/diffc.png",
+        "baseline": "demo-images/div2k-0002/msillm/0.3037/baseline.jpg",
+        "diffc": "demo-images/div2k-0002/msillm/0.3037/diffc.jpg",
         "bpp": 0.3037,
         "size": "37 KB",
         "lpips": 0.07528939843177795,
         "psnr": 26.277172909954885
       },
       {
-        "baseline": "demo-images/div2k-0002/msillm/0.4653/baseline.png",
-        "diffc": "demo-images/div2k-0002/msillm/0.4653/diffc.png",
+        "baseline": "demo-images/div2k-0002/msillm/0.4653/baseline.jpg",
+        "diffc": "demo-images/div2k-0002/msillm/0.4653/diffc.jpg",
         "bpp": 0.4653,
         "size": "57 KB",
         "lpips": 0.05282410606741905,
         "psnr": 27.165635680736923
       },
       {
-        "baseline": "demo-images/div2k-0002/msillm/0.7993/baseline.png",
-        "diffc": "demo-images/div2k-0002/msillm/0.7993/diffc.png",
+        "baseline": "demo-images/div2k-0002/msillm/0.7993/baseline.jpg",
+        "diffc": "demo-images/div2k-0002/msillm/0.7993/diffc.jpg",
         "bpp": 0.7993,
         "size": "98 KB",
         "lpips": 0.03137930855154991,
@@ -2317,7 +2317,7 @@ export const demoData = {
     ]
   },
   "div2k-0016": {
-    "ground_truth": "demo-images/div2k-0016/gt.png",
+    "ground_truth": "demo-images/div2k-0016/gt.jpg",
     "diffc_bpp": [
       0.0007274797570850203,
       0.0010042383603238868,
@@ -2779,64 +2779,64 @@ export const demoData = {
     ],
     "msillm": [
       {
-        "baseline": "demo-images/div2k-0016/msillm/0.0046/baseline.png",
-        "diffc": "demo-images/div2k-0016/msillm/0.0046/diffc.png",
+        "baseline": "demo-images/div2k-0016/msillm/0.0046/baseline.jpg",
+        "diffc": "demo-images/div2k-0016/msillm/0.0046/diffc.jpg",
         "bpp": 0.0046,
         "size": "581 B",
         "lpips": 0.525363564491272,
         "psnr": 20.22655041393838
       },
       {
-        "baseline": "demo-images/div2k-0016/msillm/0.0073/baseline.png",
-        "diffc": "demo-images/div2k-0016/msillm/0.0073/diffc.png",
+        "baseline": "demo-images/div2k-0016/msillm/0.0073/baseline.jpg",
+        "diffc": "demo-images/div2k-0016/msillm/0.0073/diffc.jpg",
         "bpp": 0.0073,
         "size": "923 B",
         "lpips": 0.4114763140678406,
         "psnr": 20.913688322046788
       },
       {
-        "baseline": "demo-images/div2k-0016/msillm/0.0461/baseline.png",
-        "diffc": "demo-images/div2k-0016/msillm/0.0461/diffc.png",
+        "baseline": "demo-images/div2k-0016/msillm/0.0461/baseline.jpg",
+        "diffc": "demo-images/div2k-0016/msillm/0.0461/diffc.jpg",
         "bpp": 0.0461,
         "size": "5 KB",
         "lpips": 0.2095659375190735,
         "psnr": 23.724843172670546
       },
       {
-        "baseline": "demo-images/div2k-0016/msillm/0.0894/baseline.png",
-        "diffc": "demo-images/div2k-0016/msillm/0.0894/diffc.png",
+        "baseline": "demo-images/div2k-0016/msillm/0.0894/baseline.jpg",
+        "diffc": "demo-images/div2k-0016/msillm/0.0894/diffc.jpg",
         "bpp": 0.0894,
         "size": "11 KB",
         "lpips": 0.15191903710365295,
         "psnr": 25.144301685552563
       },
       {
-        "baseline": "demo-images/div2k-0016/msillm/0.1702/baseline.png",
-        "diffc": "demo-images/div2k-0016/msillm/0.1702/diffc.png",
+        "baseline": "demo-images/div2k-0016/msillm/0.1702/baseline.jpg",
+        "diffc": "demo-images/div2k-0016/msillm/0.1702/diffc.jpg",
         "bpp": 0.1702,
         "size": "21 KB",
         "lpips": 0.10592029988765717,
         "psnr": 26.577744126661173
       },
       {
-        "baseline": "demo-images/div2k-0016/msillm/0.3289/baseline.png",
-        "diffc": "demo-images/div2k-0016/msillm/0.3289/diffc.png",
+        "baseline": "demo-images/div2k-0016/msillm/0.3289/baseline.jpg",
+        "diffc": "demo-images/div2k-0016/msillm/0.3289/diffc.jpg",
         "bpp": 0.3289,
         "size": "40 KB",
         "lpips": 0.06539082527160645,
         "psnr": 28.540896106251633
       },
       {
-        "baseline": "demo-images/div2k-0016/msillm/0.4903/baseline.png",
-        "diffc": "demo-images/div2k-0016/msillm/0.4903/diffc.png",
+        "baseline": "demo-images/div2k-0016/msillm/0.4903/baseline.jpg",
+        "diffc": "demo-images/div2k-0016/msillm/0.4903/diffc.jpg",
         "bpp": 0.4903,
         "size": "60 KB",
         "lpips": 0.04748300462961197,
         "psnr": 29.92083857388573
       },
       {
-        "baseline": "demo-images/div2k-0016/msillm/0.8177/baseline.png",
-        "diffc": "demo-images/div2k-0016/msillm/0.8177/diffc.png",
+        "baseline": "demo-images/div2k-0016/msillm/0.8177/baseline.jpg",
+        "diffc": "demo-images/div2k-0016/msillm/0.8177/diffc.jpg",
         "bpp": 0.8177,
         "size": "100 KB",
         "lpips": 0.026005860418081284,
