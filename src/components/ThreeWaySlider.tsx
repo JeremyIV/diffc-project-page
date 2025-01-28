@@ -23,12 +23,12 @@ const ThreeWaySlider = ({
     img.src = imageA;
   }, [imageA]);
 
-  const handleMouseMove = (e) => {
+  const handleMove = (clientX, clientY) => {
     if (!containerRef.current || !isDragging.current) return;
     
     const rect = containerRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    const x = clientX - rect.left;
+    const y = clientY - rect.top;
     
     const newHorizontalPosition = Math.max(0, Math.min(100, (x / rect.width) * 100));
     const newVerticalPosition = Math.max(0, Math.min(100, (y / rect.height) * 100));
@@ -37,17 +37,43 @@ const ThreeWaySlider = ({
     setVerticalPosition(newVerticalPosition);
   };
 
+  // Mouse event handlers
+  const handleMouseMove = (e) => {
+    handleMove(e.clientX, e.clientY);
+  };
+
   const handleMouseUp = () => {
     isDragging.current = false;
   };
 
+  // Touch event handlers
+  const handleTouchMove = (e) => {
+    e.preventDefault(); // Prevent scrolling while dragging
+    const touch = e.touches[0];
+    handleMove(touch.clientX, touch.clientY);
+  };
+
+  const handleTouchEnd = () => {
+    isDragging.current = false;
+  };
+
   useEffect(() => {
+    // Mouse events
     document.addEventListener('mouseup', handleMouseUp);
     document.addEventListener('mousemove', handleMouseMove);
     
+    // Touch events
+    document.addEventListener('touchmove', handleTouchMove, { passive: false });
+    document.addEventListener('touchend', handleTouchEnd);
+    
     return () => {
+      // Clean up mouse events
       document.removeEventListener('mouseup', handleMouseUp);
       document.removeEventListener('mousemove', handleMouseMove);
+      
+      // Clean up touch events
+      document.removeEventListener('touchmove', handleTouchMove);
+      document.removeEventListener('touchend', handleTouchEnd);
     };
   }, []);
 
@@ -60,7 +86,7 @@ const ThreeWaySlider = ({
   return (
     <div 
       ref={containerRef}
-      className="relative select-none w-full"
+      className="relative select-none w-full touch-none"
       style={{ 
         paddingTop: `${(1 / aspectRatio) * 100}%`
       }}
@@ -118,16 +144,17 @@ const ThreeWaySlider = ({
 
         {/* Single intersection handle */}
         <div 
-          className="absolute w-8 h-8 cursor-move"
+          className="absolute w-12 sm:w-8 h-12 sm:h-8 cursor-move"
           style={{ 
             left: `${horizontalPosition}%`,
             top: `${verticalPosition}%`,
             transform: 'translate(-50%, -50%)'
           }}
           onMouseDown={() => isDragging.current = true}
+          onTouchStart={() => isDragging.current = true}
         >
           <div className="w-full h-full bg-white shadow-lg flex items-center justify-center rotate-45 rounded-sm">
-            <Move size={20} className="-rotate-45" strokeWidth={2} />
+            <Move size={20} className="-rotate-45 sm:w-5 sm:h-5 w-8 h-8" strokeWidth={2} />
           </div>
         </div>
       </div>
