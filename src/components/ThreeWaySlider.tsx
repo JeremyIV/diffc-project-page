@@ -44,17 +44,29 @@ const ThreeWaySlider = ({
 
   const handleMouseUp = () => {
     isDragging.current = false;
+    document.body.style.overflow = '';
   };
 
   // Touch event handlers
   const handleTouchMove = (e) => {
-    e.preventDefault(); // Prevent scrolling while dragging
-    const touch = e.touches[0];
-    handleMove(touch.clientX, touch.clientY);
+    // Only prevent default if we're actually dragging
+    if (isDragging.current) {
+      e.preventDefault();
+      const touch = e.touches[0];
+      handleMove(touch.clientX, touch.clientY);
+    }
+  };
+
+  const handleTouchStart = (e) => {
+    isDragging.current = true;
+    // Prevent scrolling only when starting to drag
+    document.body.style.overflow = 'hidden';
   };
 
   const handleTouchEnd = () => {
     isDragging.current = false;
+    // Re-enable scrolling when done dragging
+    document.body.style.overflow = '';
   };
 
   useEffect(() => {
@@ -62,18 +74,17 @@ const ThreeWaySlider = ({
     document.addEventListener('mouseup', handleMouseUp);
     document.addEventListener('mousemove', handleMouseMove);
     
-    // Touch events
-    document.addEventListener('touchmove', handleTouchMove, { passive: false });
+    // Touch events - note we're not using passive: false here anymore
+    document.addEventListener('touchmove', handleTouchMove);
     document.addEventListener('touchend', handleTouchEnd);
     
     return () => {
-      // Clean up mouse events
       document.removeEventListener('mouseup', handleMouseUp);
       document.removeEventListener('mousemove', handleMouseMove);
-      
-      // Clean up touch events
       document.removeEventListener('touchmove', handleTouchMove);
       document.removeEventListener('touchend', handleTouchEnd);
+      // Make sure we re-enable scrolling when component unmounts
+      document.body.style.overflow = '';
     };
   }, []);
 
@@ -86,7 +97,7 @@ const ThreeWaySlider = ({
   return (
     <div 
       ref={containerRef}
-      className="relative select-none w-full touch-none"
+      className="relative select-none w-full"
       style={{ 
         paddingTop: `${(1 / aspectRatio) * 100}%`
       }}
@@ -151,7 +162,7 @@ const ThreeWaySlider = ({
             transform: 'translate(-50%, -50%)'
           }}
           onMouseDown={() => isDragging.current = true}
-          onTouchStart={() => isDragging.current = true}
+          onTouchStart={handleTouchStart}
         >
           <div className="w-full h-full bg-white shadow-lg flex items-center justify-center rotate-45 rounded-sm">
             <Move size={20} className="-rotate-45 sm:w-5 sm:h-5 w-8 h-8" strokeWidth={2} />
