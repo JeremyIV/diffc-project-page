@@ -51,7 +51,7 @@ const MethodSelector = ({ method, displayName, bitrates, selectedBpp, onBppSelec
   <div className="flex flex-col">
     <div className="flex items-center gap-2 mb-1">
       <div 
-        className="w-4 h-4 rounded-full"
+        className="w-4 h-4 rounded-full shrink-0"
         style={{ backgroundColor: methodNamesAndColors[method].color }}
       />
       <span className="text-sm font-medium text-gray-700">{displayName}</span>
@@ -268,7 +268,7 @@ const ImageComparisonWidget = ({ data }) => {
   return (
     <div className="w-full max-w-6xl mx-auto space-y-6">
       {/* Image selection */}
-      <div className="flex gap-4 justify-center items-end">
+      <div className="flex gap-4 justify-center items-end flex-wrap">
         {imageNames.map((imageName) => (
           <ThumbnailButton
             key={imageName}
