@@ -1,14 +1,16 @@
 ---
 interface Props {
   source: string;
+  aspectRatio?: number;
 }
 
-const { source } = Astro.props;
+const { source, aspectRatio = 16 / 9 } = Astro.props;
 ---
 
 <div class="w-full flex justify-center">
   <video
-    class="w-full h-auto aspect-video rounded-lg"
+    class="w-full h-auto rounded-lg"
+    style={`aspect-ratio: ${aspectRatio}`}
     autoplay
     controls
     muted
